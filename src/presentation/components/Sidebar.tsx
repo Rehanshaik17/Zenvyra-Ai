@@ -34,6 +34,10 @@ const Sidebar: React.FC<SidebarProps> = ({
           <span className="material-symbols-outlined">add_circle</span>
           <span>New Chat</span>
         </button>
+        <button className="nav-item" onClick={() => window.location.href = '/agent'} id="sidebar-agent-btn">
+          <span className="material-symbols-outlined">record_voice_over</span>
+          <span>Voice Agent</span>
+        </button>
 
         {/* History list */}
         <div className="history-list">

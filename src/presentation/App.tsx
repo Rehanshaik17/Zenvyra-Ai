@@ -1,9 +1,15 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import AgentPage from '../agent/AgentPage';
 import { useAuth } from './hooks/useAuth';
+
+const AgentPageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <AgentPage onBack={() => navigate('/')} />;
+};
 
 const App: React.FC = () => {
   const { user, isLoading, isAuthenticated, error, login, signup, logout, setError } = useAuth();
@@ -37,6 +43,16 @@ const App: React.FC = () => {
               <Navigate to="/" replace />
             ) : (
               <SignupPage onSignup={signup} error={error} />
+            )
+          }
+        />
+        <Route
+          path="/agent"
+          element={
+            isAuthenticated ? (
+              <AgentPageWrapper />
+            ) : (
+              <Navigate to="/login" replace />
             )
           }
         />
