@@ -12,7 +12,7 @@ const AgentPageWrapper: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  const { user, isLoading, isAuthenticated, error, login, signup, logout, setError } = useAuth();
+  const { user, isLoading, isAuthenticated, error, login, signup, logout } = useAuth();
 
   if (isLoading) {
     return (
