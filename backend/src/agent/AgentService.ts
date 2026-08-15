@@ -50,7 +50,7 @@ export class AgentService {
 
     for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
       const response = await this.ai.models.generateContent({
-        model: 'gemini-2.0-flash',
+        model: 'gemini-3.5-flash',
         contents: currentContents,
         config: {
           systemInstruction: AGENT_SYSTEM_PROMPT,
