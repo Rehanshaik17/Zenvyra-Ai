@@ -26,33 +26,45 @@ export const authHeaders = () => {
 };
 
 export const signup = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-  const res = await fetch(`${env.API_BASE_URL}/auth/signup`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password }),
-  });
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Signup failed');
+  try {
+    const res = await fetch(`${env.API_BASE_URL}/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.error || `Signup failed (${res.status} ${res.statusText})`);
+    }
+    setToken(data.token);
+    return data;
+  } catch (err: any) {
+    if (err.name === 'TypeError' && err.message?.includes('fetch')) {
+      throw new Error(`Cannot connect to server at ${env.API_BASE_URL}. Ensure backend is deployed and VITE_API_BASE_URL is set.`);
+    }
+    throw err;
   }
-  const data: AuthResponse = await res.json();
-  setToken(data.token);
-  return data;
 };
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
-  const res = await fetch(`${env.API_BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || 'Login failed');
+  try {
+    const res = await fetch(`${env.API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.error || `Login failed (${res.status} ${res.statusText})`);
+    }
+    setToken(data.token);
+    return data;
+  } catch (err: any) {
+    if (err.name === 'TypeError' && err.message?.includes('fetch')) {
+      throw new Error(`Cannot connect to server at ${env.API_BASE_URL}. Ensure backend is deployed and VITE_API_BASE_URL is set.`);
+    }
+    throw err;
   }
-  const data: AuthResponse = await res.json();
-  setToken(data.token);
-  return data;
 };
 
 export const getMe = async (): Promise<AuthUser> => {
